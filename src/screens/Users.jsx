@@ -1,33 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-import ListItem from './../components/ListItem'
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, Text } from "react-native";
+import ListItem from "./../components/ListItem";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    backgroundColor: "#fff",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   list: {
-    alignSelf: 'stretch',
-  }
+    alignSelf: "stretch",
+  },
 });
 
-const users = [
-  { id: '1', name: 'asdñkj' },  
-  { id: '2', name: 'eeeeeeej' },
-]
+export default ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
 
-export default () => {
+  const fetchUsers = async () => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    const data = await response.json();
+    setUsers(data);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <FlatList 
-        style={styles.list}
-        data={users}
-        keyExtractor={x => x.id}
-        renderItem={({ item }) => <ListItem title={item.name} />}
+      {loading ? 
+        <Text>Cargando</Text>
+       : 
+        <FlatList
+          style={styles.list}
+          data={users}
+          keyExtractor={(x) => String(x.id)}
+          renderItem={({ item }) => (
+            <ListItem
+              title={item.name}
+              onPress={() => navigation.navigate("Posts", { user_id: item.id })}
+            />
+          )}
         />
+      }
     </View>
   );
-}
+};
