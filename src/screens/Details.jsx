@@ -1,14 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default () => {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,3 +9,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default ({ navigation }) => {
+  const body = navigation.getParam('body');
+  const title = navigation.getParam('title');
+  
+  return (
+    <View style={styles.container}>
+      <Text>{title}</Text>
+      <Text>{body}</Text>
+    </View>
+  );
+}

@@ -38,7 +38,7 @@ export default ({ navigation }) => {
       <FlatList
         style={styles.list}
         data={posts.filter(x => x.userId === userId)}
-        keyExtractor={x => String(x.id)}
+        keyExtractor={x => (x.id).toString()}
         renderItem={({ item }) => (
           <ListItem
             title={item.title}
